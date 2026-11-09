@@ -9,9 +9,8 @@ public abstract class Brewer {
     private int yearsOfExperience;
     private List<DayOfWeek> workingDays;
 
-    public Brewer(String name, String role, int yearsOfExperience, List<DayOfWeek> workingDays) {
+    protected Brewer(String name, String role, int yearsOfExperience, List<DayOfWeek> workingDays) {
         this.name = name;
-        this.role = role;
         this.yearsOfExperience = yearsOfExperience;
         this.workingDays = workingDays;
     }
@@ -24,9 +23,7 @@ public abstract class Brewer {
         return name;
     }
 
-    public boolean isMaster() {
-        return this.role.equals("master");
-    }
+    public abstract boolean isMaster();
 
     public int getYearsOfExperience() {
         return yearsOfExperience;

@@ -2,6 +2,7 @@ package com.codecool.brewery;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 /**
  * Represents a beer produced by the brewery.
@@ -9,12 +10,22 @@ import java.time.temporal.ChronoUnit;
  */
 public abstract class Beer {
     private String name;
+    private String type;
     private double alcoholContent;
     private LocalDate productionDate;
     private int fermentationDay;
     private int maxStoreTemp;
 
-    public Beer(String name, double alcoholContent, LocalDate productionDate, int fermentationDay, int maxStoreTemp) {}
+    protected Beer(String name, String type, double alcoholContent, LocalDate productionDate, int fermentationDay, int maxStoreTemp) {
+        getValidAlcoholContent(alcoholContent);
+
+        this.name = name;
+        this.type = type;
+        this.alcoholContent = alcoholContent;
+        this.productionDate = productionDate;
+        this.fermentationDay = fermentationDay;
+        this.maxStoreTemp = maxStoreTemp;
+    }
 
     public void getDaysUntilReady() {
         LocalDate productionDate = LocalDate.now();
@@ -46,5 +57,26 @@ public abstract class Beer {
 
     public LocalDate getProductionDate() {
         return productionDate;
+    }
+
+    private void getValidAlcoholContent(double alcoholContent) {
+        if (alcoholContent < 0 || alcoholContent >100) {
+            throw new IllegalArgumentException("The alcohol percentage should be between 0% and 100%!");
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        Beer beer = (Beer) o;
+        return Double.compare(beer.alcoholContent, alcoholContent) == 0 &&
+                Objects.equals(name, beer.name) &&
+                Objects.equals(productionDate, beer.productionDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, alcoholContent, productionDate);
     }
 }

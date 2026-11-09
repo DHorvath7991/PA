@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public class Brewery {
     private String name;
-    private  List<Brewer> brewers;
+    private List<Brewer> brewers;
     private Map<Beer, Integer> stock;
 
     public Brewery(String name) {
@@ -37,6 +37,10 @@ public class Brewery {
         }
 
         brewers.add(brewer);
+    }
+
+    public void addListOfBrewer(List<Brewer> newBrewers) {
+        newBrewers.forEach(this::addBrewer);
     }
 
     public void addBeerToStock(Beer beer) {
@@ -90,7 +94,7 @@ public class Brewery {
      */
     public int calculateProductionCapacity(List<DayOfWeek> days) {
         if (days == null || days.isEmpty()) {
-            return 0;
+            throw new IllegalArgumentException("Days can't be null or empty!");
         }
 
         boolean hasMaster = brewers != null && brewers.stream().anyMatch(Brewer::isMaster);

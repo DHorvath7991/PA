@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Ale extends Beer{
 
-    Ale(String name, double alcoholContent, LocalDate productionDate, int fermentationDay, int maxStoreTemp) {
-        super("Ale", alcoholContent, LocalDate.now(), 21, 14);
+    Ale(String name, double alcoholContent, LocalDate productionDate) {
+        super(name,"Ale", alcoholContent, productionDate, 14, 23);
     }
 }
