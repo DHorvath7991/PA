@@ -11,20 +11,35 @@ import java.util.stream.Collectors;
  * Represents a brewery that manages beer production and staff.
  * Many methods are incomplete and need to be implemented.
  */
-class Brewery {
+public class Brewery {
     String name;
     List<Brewer> brewers;
+    Map<String, Integer> stock;
 
-    Brewery(String name) {}
+    public Brewery(String name) {}
 
-    void addBrewer() {
-        // TODO: Implement proper null checking and validation
-        // TODO: add brewer to brewers list
+    public void addBrewer(Brewer brewer) {
+        if (brewer == null) {
+            throw new IllegalArgumentException("The brewer can't be null!");
+        }
+
+        if (brewer.isMaster()) {
+            boolean hasMaster = brewers.stream().anyMatch(Brewer::isMaster);
+            if (hasMaster) {
+                throw new IllegalStateException("The brewery already have a master brewer!");
+            }
+        }
+
+        brewers.add(brewer);
     }
 
-    void addBeerToStock() {
-        // TODO: Implement proper null checking and validation
-        // TODO: add beer to stock
+    public void addBeerToStock(Beer beer) {
+        if (beer == null) {
+            throw new IllegalArgumentException("The beer can't be null!");
+        }
+        String currentBeerType = beer.getName();
+
+        stock.merge(beer.getName(), 1, Integer::sum);
     }
 
     /**
@@ -34,8 +49,8 @@ class Brewery {
      * - What happens if there's not enough quantity?
      * - Should this modify the stock?
      */
-    void retrieveBeerFromStock() {
-        // TODO: Implement
+    public void retrieveBeerFromStock() {
+
     }
 
     /**

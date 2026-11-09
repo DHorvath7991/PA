@@ -23,8 +23,8 @@ public abstract class Brewer {
         return name;
     }
 
-    public String getRole() {
-        return role;
+    public boolean isMaster() {
+        return this.role.equals("master");
     }
 
     public int getYearsOfExperience() {

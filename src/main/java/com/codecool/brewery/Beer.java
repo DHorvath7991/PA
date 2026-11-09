@@ -39,4 +39,8 @@ public abstract class Beer {
     protected int getMaxStoreTemp() {
         return this.maxStoreTemp;
     }
+
+    public String getName() {
+        return this.name;
+    }
 }
