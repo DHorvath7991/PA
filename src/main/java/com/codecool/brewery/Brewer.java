@@ -1,18 +1,37 @@
 package com.codecool.brewery;
 
-/**
- * Represents a brewer working at the brewery.
- * You need to extend this class to support different types of brewers.
- */
-class Brewer {
-    String name;
-    int yearsOfExperience;
+import java.util.List;
 
-    Brewer(String name, int yearsOfExperience) {}
+public abstract class Brewer {
+    private String name;
+    private String role;
+    private int yearsOfExperience;
+    private List<Days> workingDays;
 
-    // TODO: Add method to check if brewer is available on a specific day
-    // TODO: Consider how different types of brewers have different schedules
-    // TODO: Consider isAvailableOn may accept parameters for day checks
-    void isAvailableOn(){
-    };
+    public Brewer(String name, String role, int yearsOfExperience, List<Days> workingDays) {
+        this.name = name;
+        this.role = role;
+        this.yearsOfExperience = yearsOfExperience;
+        this.workingDays = workingDays;
+    }
+
+    public boolean isAvailableOn(Days day) {
+        return this.workingDays.contains(day);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public int getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public List<Days> getWorkingDays() {
+        return workingDays;
+    }
 }
