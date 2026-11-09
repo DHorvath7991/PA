@@ -14,7 +14,7 @@ public abstract class Beer {
     private int fermentationDay;
     private int maxStoreTemp;
 
-    Beer(String name, double alcoholContent, LocalDate productionDate, int fermentationDay, int maxStoreTemp) {}
+    public Beer(String name, double alcoholContent, LocalDate productionDate, int fermentationDay, int maxStoreTemp) {}
 
     public void getDaysUntilReady() {
         LocalDate productionDate = LocalDate.now();
@@ -42,5 +42,9 @@ public abstract class Beer {
 
     public String getName() {
         return this.name;
+    }
+
+    public LocalDate getProductionDate() {
+        return productionDate;
     }
 }

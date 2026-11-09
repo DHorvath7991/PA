@@ -1,21 +1,22 @@
 package com.codecool.brewery;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 public abstract class Brewer {
     private String name;
     private String role;
     private int yearsOfExperience;
-    private List<Days> workingDays;
+    private List<DayOfWeek> workingDays;
 
-    public Brewer(String name, String role, int yearsOfExperience, List<Days> workingDays) {
+    public Brewer(String name, String role, int yearsOfExperience, List<DayOfWeek> workingDays) {
         this.name = name;
         this.role = role;
         this.yearsOfExperience = yearsOfExperience;
         this.workingDays = workingDays;
     }
 
-    public boolean isAvailableOn(Days day) {
+    public boolean isAvailableOn(DayOfWeek day) {
         return this.workingDays.contains(day);
     }
 
@@ -31,7 +32,7 @@ public abstract class Brewer {
         return yearsOfExperience;
     }
 
-    public List<Days> getWorkingDays() {
+    public List<DayOfWeek> getWorkingDays() {
         return workingDays;
     }
 }

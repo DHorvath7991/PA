@@ -1,10 +1,8 @@
 package com.codecool.brewery;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -12,11 +10,19 @@ import java.util.stream.Collectors;
  * Many methods are incomplete and need to be implemented.
  */
 public class Brewery {
-    String name;
-    List<Brewer> brewers;
-    Map<String, Integer> stock;
+    private String name;
+    private  List<Brewer> brewers;
+    private Map<Beer, Integer> stock;
 
-    public Brewery(String name) {}
+    public Brewery(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("The brewery's name cannot be null or empty!");
+        }
+
+        this.name = name;
+        this.brewers = new ArrayList<>();
+        this.stock = new HashMap<>();
+    }
 
     public void addBrewer(Brewer brewer) {
         if (brewer == null) {
@@ -37,9 +43,7 @@ public class Brewery {
         if (beer == null) {
             throw new IllegalArgumentException("The beer can't be null!");
         }
-        String currentBeerType = beer.getName();
-
-        stock.merge(beer.getName(), 1, Integer::sum);
+        stock.merge(beer, 1, Integer::sum);
     }
 
     /**
@@ -49,8 +53,31 @@ public class Brewery {
      * - What happens if there's not enough quantity?
      * - Should this modify the stock?
      */
-    public void retrieveBeerFromStock() {
+    public void retrieveBeerFromStock(String beerType, int quantity) {
+        if (beerType == null || quantity <= 0) {
+            throw new IllegalArgumentException("The type can't be null and the quantity should be more than 0!");
+        }
 
+        Beer targetBeer = stock.keySet().stream()
+                .filter(beer -> beer.getName().equalsIgnoreCase(beerType))
+                .findFirst()
+                .orElse(null);
+
+        if (targetBeer == null) {
+            throw new IllegalArgumentException("There is no such type of beer in the stock: " + beerType);
+        }
+
+        int currentQuantity = stock.get(targetBeer);
+
+        if (currentQuantity < quantity) {
+            throw new IllegalStateException("Not enough stock for " + beerType + "! Available: " + currentQuantity + ", Requested: " + quantity);
+        }
+
+        if (currentQuantity == quantity) {
+            stock.remove(targetBeer);
+        } else {
+            stock.put(targetBeer, currentQuantity - quantity);
+        }
     }
 
     /**
@@ -62,8 +89,19 @@ public class Brewery {
      * - Return the sum of helper counts across all days
      */
     public int calculateProductionCapacity(List<DayOfWeek> days) {
-        // TODO: Implement
-        return 0;
+        if (days == null || days.isEmpty()) {
+            return 0;
+        }
+
+        boolean hasMaster = brewers != null && brewers.stream().anyMatch(Brewer::isMaster);
+
+        if (!hasMaster) {
+            return 0;
+        }
+
+        return days.stream()
+                .mapToInt(this::countAvailableHelpers)
+                .sum();
     }
 
     /**
@@ -73,8 +111,12 @@ public class Brewery {
      * - Return collection of beer names
      */
     public List<String> findMaturedBeers() {
-        // TODO: Implement
-        return null;
+        LocalDate today = LocalDate.now();
+
+        return stock.keySet().stream()
+                .filter(beer -> beer.getProductionDate().plusDays(180).isBefore(today))
+                .map(Beer::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -151,8 +193,10 @@ public class Brewery {
     /**
      * Counts available helpers on a specific day.
      */
-    // TODO: Implement countAvailableHelpers method
     private int countAvailableHelpers(DayOfWeek day) {
-        return 0;
+        return (int) brewers.stream()
+                .filter(brewer -> !brewer.isMaster())
+                .filter(brewer -> brewer.isAvailableOn(day))
+                .count();
     }
 }
