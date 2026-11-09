@@ -35,19 +35,11 @@ class BreweryTest {
                         new HelperBrewer("Matilda", 4, List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)),
                         new HelperBrewer("Sigrid", 6, List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY))
                 ));
-        // TODO: master brewer: "Master John", 15 years experience
-        // TODO: helper brewer: "Helper Alice", 3 years experience, available Mon, Tue, Wed
-        // TODO: helper brewer: "Helper Bob", 2 years experience, available Mon, Thu, Fri
-        // TODO: helper brewer: "Helper Charlie", 4 years experience, available Tue, Wed, Thu
-
-        // TODO: add master and helpers to brewery
     }
 
     @Test
     @DisplayName("Simple Test: Production capacity on single day equals available helpers")
     void testProductionCapacityOnSingleDay() {
-
-        // Monday: Lucius, Laura, Geralt, Matilda are available (4 helpers)
 
         int capacity = brewery.calculateProductionCapacity(List.of(DayOfWeek.MONDAY));
         assertEquals(4, capacity, "Production capacity should equal number of helpers on Monday");
@@ -56,8 +48,6 @@ class BreweryTest {
     @Test
     @DisplayName("Production capacity on multiple days returns sum of helpers")
     void testProductionCapacityOnMultipleDays() {
-        // Monday: Lucius, Laura, Geralt, Matilda are available (4 helpers)
-        // Thursday: Lucius, Laura, Geralt, Herkules, Matilda are available (4 helpers)
         int capacity = brewery.calculateProductionCapacity(List.of(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
         assertEquals(8, capacity, "Production capacity on multiple days should equal the sum of available helpers across those days");
     }
@@ -75,7 +65,6 @@ class BreweryTest {
     void testFindExpiredBeers() {
         brewery.addBeerToStock(new Lager("Krusovice",5.0, LocalDate.now().minusDays(100)));
 
-        // Add matured beers (older than 180 day -> expired)
         brewery.addBeerToStock(new Ale("Soproni IPA", 6.0, LocalDate.now().minusDays(200)));
         brewery.addBeerToStock(new Lager("Bernard",5.5, LocalDate.now().minusDays(190)));
 
@@ -92,7 +81,6 @@ class BreweryTest {
     void testFindOptimalProductionDays() {
         List<String> optimalDays = brewery.findOptimalProductionDays("MONDAY", "FRIDAY");
 
-        // On monday and Thursday there is 4 helpers each day, so both should be in the list.
         assertFalse(optimalDays.isEmpty());
         assertTrue(optimalDays.contains("MONDAY"));
         assertTrue(optimalDays.contains("THURSDAY"));

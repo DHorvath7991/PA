@@ -4,10 +4,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-/**
- * Represents a beer produced by the brewery.
- * This is a basic implementation - you need to extend this to support different beer types.
- */
 public abstract class Beer {
     private String name;
     private String type;
